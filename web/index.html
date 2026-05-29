@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2196F3">
+  <title>AI Flutter Builder - معاينة حية</title>
+  <style>
+    body { margin: 0; padding: 0; background: #0a0a1a; overflow: hidden; }
+    #loading {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      height: 100vh; color: #fff; font-family: system-ui, sans-serif;
+    }
+    .spinner {
+      width: 48px; height: 48px; border: 4px solid rgba(33,150,243,0.2);
+      border-top-color: #2196F3; border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loading p { margin-top: 16px; opacity: 0.8; }
+  </style>
+  <script>
+    // Service Worker registration for offline support
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/flutter_service_worker.js');
+      });
+    }
+  </script>
+</head>
+<body>
+  <div id="loading">
+    <div class="spinner"></div>
+    <p>جاري تحميل المعاينة الحية...</p>
+  </div>
+  <script src="flutter.js" defer></script>
+  <script>
+    window.addEventListener('load', function() {
+      _flutter.loader.load({
+        serviceWorkerSettings: {
+          serviceWorkerVersion: _flutter.loader.serviceWorkerVersion
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          document.getElementById('loading').style.display = 'none';
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
